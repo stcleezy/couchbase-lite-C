@@ -29,8 +29,8 @@ def sliceToString(s):
         return None
     return str(ffi.string(ffi.cast("const char*", s.buf), s.size), "utf-8")
 
-def sliceResultToBytes(sr):
-    if sr.buf == None:
+def sliceResultToBytes(s):
+    if s.buf == None:
         return None
     return bytes( ffi.buffer(s.buf, s.size) )
 
