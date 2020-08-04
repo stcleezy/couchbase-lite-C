@@ -14,7 +14,7 @@ FLDictType  = ffi.typeof("struct $$FLDict *")
 
 
 # Most general function, accepts params of type FLValue, FLDict or FLArray.
-def decodeFleece(f, *, depth =1):
+def decodeFleece(f, *, depth =99):
     ffitype = ffi.typeof(f)
     if ffitype == FLDictType:
         return decodeFleeceDict(f, depth=depth)
@@ -24,7 +24,7 @@ def decodeFleece(f, *, depth =1):
         return decodeFleeceValue(f, depth=depth)
 
 # Decodes an FLValue (which may of course turn out to be an FLArray or FLDict)
-def decodeFleeceValue(f, *, depth =1):
+def decodeFleeceValue(f, *, depth =99):
     typ = lib.FLValue_GetType(f)
     if typ == lib.kFLString:
         return sliceToString(lib.FLValue_AsString(f))
@@ -48,7 +48,7 @@ def decodeFleeceValue(f, *, depth =1):
         return None
 
 # Decodes an FLArray
-def decodeFleeceArray(farray, *, depth =1):
+def decodeFleeceArray(farray, *, depth =99):
     if depth <= 0:
         return Array(fleece=farray)
     result = []
@@ -59,7 +59,7 @@ def decodeFleeceArray(farray, *, depth =1):
     return result
 
 # Decodes an FLDict
-def decodeFleeceDict(fdict, *, depth =1):
+def decodeFleeceDict(fdict, *, depth =99):
     if lib.CBL_IsBlob(fdict):
         return Blob(None, fdict=fdict)
     elif depth <= 0:
